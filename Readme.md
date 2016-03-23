@@ -1,7 +1,7 @@
 # Личный проект «Код и Магия» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Елена Арутюнян](https://up.htmlacademy.ru/javascript/4/user/106442).
-* Наставник: `Неизвестно`.
+* Наставник: `Сергей Катревич`.
 
 ---
 
