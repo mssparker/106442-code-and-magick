@@ -3,14 +3,14 @@
 function getMessage(a,b) {
   if (typeof a == 'boolean') {
     if (a > 0) {
-      alert('Я попал в ' + b);
+      return 'Я попал в ' + b;
     } else {
-      alert('Я никуда не попал');
+      return 'Я никуда не попал';
     }
   } else if (typeof a == 'number') {
     var givenDistance = 100;
     var totalDistance = a * givenDistance;
-    alert('Я прыгнул на ' + totalDistance + ' сантиметров');
+    return 'Я прыгнул на ' + totalDistance + ' сантиметров';
 
   } else if (typeof (a,b) == 'object') {
      var arrayLength = 0;
@@ -19,7 +19,7 @@ function getMessage(a,b) {
       arrayLength += a[i] * b[j];
     }
 
-     alert('Я прошёл ' + arrayLength + ' метров');
+    return 'Я прошёл ' + arrayLength + ' метров';
 
   } else if (typeof a == 'object') {
     var arraySum = 0;
@@ -28,7 +28,7 @@ function getMessage(a,b) {
       arraySum += a[i];
     }
 
-    alert('Я прошёл ' + arraySum + ' шагов');
+    return 'Я прошёл ' + arraySum + ' шагов';
 
   }
 }
