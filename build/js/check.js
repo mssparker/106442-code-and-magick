@@ -12,16 +12,16 @@ function getMessage(a,b) {
     var totalDistance = a * givenDistance;
     return 'Я прыгнул на ' + totalDistance + ' сантиметров';
 
-  } else if (typeof (a,b) == 'object') {
-     var arrayLength = 0;
+  } else if ((Array.isArray(a)) && (Array.isArray(b))) {
+    var arrayLength = 0;
 
-    for (var i = 0, j=0; (i < a.length)&&(j < b.length); i++, j++){
-      arrayLength += a[i] * b[j];
+    for (var i = 0; i < a.length; i++) {
+      arrayLength += a[i] * b[i];
     }
 
     return 'Я прошёл ' + arrayLength + ' метров';
 
-  } else if (typeof a == 'object') {
+  } else if (Array.isArray(a)) {
     var arraySum = 0;
 
     for (var i = 0; i < a.length; i++) {
@@ -29,6 +29,5 @@ function getMessage(a,b) {
     }
 
     return 'Я прошёл ' + arraySum + ' шагов';
-
   }
 }
