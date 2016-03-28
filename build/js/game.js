@@ -389,13 +389,7 @@
           this._drawMessage('Пауза. Что бы продолжить нажми пробел.');
           break;
         case Verdict.INTRO:
-          this._drawMessage('Привет Я Пендальф Синий'
-              + 'Я не так крут как Гендальф Белый'
-              + 'и даже не как Гендальф Серый'
-              + 'Но я умею перемещаться и летать'
-              + 'по нажатию на стрелки.'
-              + 'А если нажать шифт'
-              + 'я еще и выстрелю файрболом!');
+          this._drawMessage('Привет! Я Пендальф Синий. Я не так крут как Гендальф Белый. Но я умею перемещаться и летать по нажатию на стрелки. А если нажать шифт я выстрелю файрболом!');
           break;
       }
     },
@@ -404,14 +398,18 @@
 
     _drawMessage: function(text) {
 
-      var boxWidth = 310;
-      var boxHeight = 150;
+      var boxWidth = 400;
+      var boxHeight = 180;
       var boxIndent = 15;
-      var boxIndentAll = 50;
+      var boxIndentAll = 30;
       var boxIndentShadow = 10;
-      var textIndentTop = 75;
-      var textIndentLeft = 75;
+      var textIndentTop = 55;
+      var textIndentLeft = 55;
+      var maxTextWidth = boxWidth - 80;
       var lineHeight = 20;
+      var arrayOfText = text.split(' ');
+      var textLine = '';
+      var emptyLine = ' ';
 
 
       // Shadow box
@@ -441,11 +439,27 @@
       this.ctx.textBaseline = 'hanging';
       this.ctx.closePath();
 
-      for(var i = 0; i < text.length; i++) {
-        this.ctx.fillText(text[i], textIndentLeft, textIndentTop);
-        textIndentTop += lineHeight;
+      for(var i = 0; i < arrayOfText.length; i++) {
+        var textRow = textLine + arrayOfText[i] + emptyLine;
+        var textWidth = this.ctx.measureText(textRow).width;
+        if (textWidth > maxTextWidth) {
+          this.ctx.fillText(textLine, textIndentLeft, textIndentTop);
+          textLine = arrayOfText[i] + emptyLine;
+          textIndentTop += lineHeight;
+
+          if (textIndentTop > boxHeight) {
+            boxHeight += lineHeight;
+          }
+
+        } else {
+          textLine = textRow;
+        }
       }
+
+      this.ctx.fillText(textLine, textIndentLeft, textIndentTop);
+
     },
+
 
     /**
      * Предзагрузка необходимых изображений для уровня.
