@@ -380,17 +380,70 @@
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._drawMessage('Ты победил! Ты красавчик!');
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._drawMessage('Ты проиграл! Ты тряпуля!');
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._drawMessage('Пауза. Что бы продолжить нажми пробел.');
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._drawMessage('Привет Я Пендальф Синий'
+              + 'Я не так крут как Гендальф Белый'
+              + 'и даже не как Гендальф Серый'
+              + 'Но я умею перемещаться и летать'
+              + 'по нажатию на стрелки.'
+              + 'А если нажать шифт'
+              + 'я еще и выстрелю файрболом!');
           break;
+      }
+    },
+
+
+
+    _drawMessage: function(text) {
+
+      var boxWidth = 310;
+      var boxHeight = 150;
+      var boxIndent = 15;
+      var boxIndentAll = 50;
+      var boxIndentShadow = 10;
+      var textIndentTop = 75;
+      var textIndentLeft = 75;
+      var lineHeight = 20;
+
+
+      // Shadow box
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(boxIndentAll + boxIndent, boxIndentAll + boxIndentShadow);
+      this.ctx.lineTo(boxIndentAll + boxIndentShadow, boxHeight + boxIndent + boxIndentShadow);
+      this.ctx.lineTo(boxWidth + boxIndentShadow, boxHeight + boxIndentShadow);
+      this.ctx.lineTo(boxWidth + boxIndentShadow, boxIndentAll + boxIndentShadow);
+      this.ctx.lineTo(boxIndent, boxIndentAll + boxIndentShadow);
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      this.ctx.fill();
+      this.ctx.closePath();
+
+      // White box
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(boxIndentAll + boxIndent, boxIndentAll);
+      this.ctx.lineTo(boxIndentAll, boxHeight + boxIndent);
+      this.ctx.lineTo(boxWidth, boxHeight);
+      this.ctx.lineTo(boxWidth, boxIndentAll);
+      this.ctx.lineTo(boxIndent, boxIndentAll);
+      this.ctx.fillStyle = '#fff';
+      this.ctx.fill();
+      this.ctx.fillStyle = '#000';
+      this.ctx.font = '16px PT Mono';
+      this.ctx.textBaseline = 'hanging';
+      this.ctx.closePath();
+
+      for(var i = 0; i < text.length; i++) {
+        this.ctx.fillText(text[i], textIndentLeft, textIndentTop);
+        textIndentTop += lineHeight;
       }
     },
 
