@@ -380,19 +380,82 @@
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          this._drawMessage('Ты победил! Ты красавчик!');
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          this._drawMessage('Ты проиграл! Ты тряпуля!');
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          this._drawMessage('Пауза. Что бы продолжить нажми пробел.');
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          this._drawMessage('Привет! Я Пендальф Синий. Я не так крут как Гендальф Белый. Но я умею перемещаться и летать по нажатию на стрелки. А если нажать шифт я выстрелю файрболом!');
           break;
       }
     },
+
+
+
+    _drawMessage: function(text) {
+
+      var boxWidth = 400;
+      var boxHeight = 180;
+      var boxIndent = 15;
+      var boxIndentAll = 30;
+      var boxIndentShadow = 10;
+      var textIndentTop = 55;
+      var textIndentLeft = 55;
+      var maxTextWidth = boxWidth - 80;
+      var lineHeight = 20;
+      var arrayOfText = text.split(' ');
+      var textLine = '';
+      var emptyLine = ' ';
+
+
+      // Shadow box
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(boxIndentAll + boxIndent, boxIndentAll + boxIndentShadow);
+      this.ctx.lineTo(boxIndentAll + boxIndentShadow, boxHeight + boxIndent + boxIndentShadow);
+      this.ctx.lineTo(boxWidth + boxIndentShadow, boxHeight + boxIndentShadow);
+      this.ctx.lineTo(boxWidth + boxIndentShadow, boxIndentAll + boxIndentShadow);
+      this.ctx.lineTo(boxIndent, boxIndentAll + boxIndentShadow);
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      this.ctx.fill();
+      this.ctx.closePath();
+
+      // White box
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(boxIndentAll + boxIndent, boxIndentAll);
+      this.ctx.lineTo(boxIndentAll, boxHeight + boxIndent);
+      this.ctx.lineTo(boxWidth, boxHeight);
+      this.ctx.lineTo(boxWidth, boxIndentAll);
+      this.ctx.lineTo(boxIndent, boxIndentAll);
+      this.ctx.fillStyle = '#fff';
+      this.ctx.fill();
+      this.ctx.fillStyle = '#000';
+      this.ctx.font = '16px PT Mono';
+      this.ctx.textBaseline = 'hanging';
+      this.ctx.closePath();
+
+      for(var i = 0; i < arrayOfText.length; i++) {
+        var textRow = textLine + arrayOfText[i] + emptyLine;
+        var textWidth = this.ctx.measureText(textRow).width;
+        if (textWidth > maxTextWidth) {
+          this.ctx.fillText(textLine, textIndentLeft, textIndentTop);
+          textLine = arrayOfText[i] + emptyLine;
+          textIndentTop += lineHeight;
+
+        } else {
+          textLine = textRow;
+        }
+      }
+
+      this.ctx.fillText(textLine, textIndentLeft, textIndentTop);
+
+    },
+
 
     /**
      * Предзагрузка необходимых изображений для уровня.
