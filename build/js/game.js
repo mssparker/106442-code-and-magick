@@ -447,10 +447,6 @@
           textLine = arrayOfText[i] + emptyLine;
           textIndentTop += lineHeight;
 
-          if (textIndentTop > boxHeight) {
-            boxHeight += lineHeight;
-          }
-
         } else {
           textLine = textRow;
         }
