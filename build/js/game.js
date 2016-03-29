@@ -419,10 +419,9 @@
       this.ctx.lineTo(boxIndentAll + boxIndentShadow, boxHeight + boxIndent + boxIndentShadow);
       this.ctx.lineTo(boxWidth + boxIndentShadow, boxHeight + boxIndentShadow);
       this.ctx.lineTo(boxWidth + boxIndentShadow, boxIndentAll + boxIndentShadow);
-      this.ctx.lineTo(boxIndent, boxIndentAll + boxIndentShadow);
+      this.ctx.closePath();
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fill();
-      this.ctx.closePath();
 
       // White box
 
@@ -431,13 +430,17 @@
       this.ctx.lineTo(boxIndentAll, boxHeight + boxIndent);
       this.ctx.lineTo(boxWidth, boxHeight);
       this.ctx.lineTo(boxWidth, boxIndentAll);
-      this.ctx.lineTo(boxIndent, boxIndentAll);
+      this.ctx.closePath();
       this.ctx.fillStyle = '#fff';
       this.ctx.fill();
       this.ctx.fillStyle = '#000';
       this.ctx.font = '16px PT Mono';
       this.ctx.textBaseline = 'hanging';
-      this.ctx.closePath();
+
+      // Разбиваем текст на слова по пробелам, а потом обходим их в цикле
+      // объединяя по одному в строку. Если при последнем объединении ширина этой строки меньше максимальной
+      // то продолжаем, а если больше, то выводим строку без последнего слова, а его записываем в новую строку.
+      // И так продолжаем, пока не обработаем весь текст.
 
       for(var i = 0; i < arrayOfText.length; i++) {
         var textRow = textLine + arrayOfText[i] + emptyLine;
