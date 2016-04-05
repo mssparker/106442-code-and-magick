@@ -6,15 +6,14 @@
   var formCloseButton = document.querySelector('.review-form-close');
 
   var form = formContainer.querySelector('.review-form');
-  var formReviewMark = form.elements['review-mark'];
+  var formReviewRadioMark = form.elements['review-mark'];
   var formReviewFieldName = form.elements['review-name'];
   var formReviewFieldText = form.elements['review-text'];
-  var formReviewFields = form.querySelector('.review-fields');
-  var formReviewFieldsName = form.querySelector('.review-fields-name');
-  var formReviewFieldsText = form.querySelector('.review-fields-text');
+  var formReviewStatus = form.querySelector('.review-fields');
+  var formReviewStatusName = form.querySelector('.review-fields-name');
+  var formReviewStatusText = form.querySelector('.review-fields-text');
   var formReviewSubmit = form.querySelector('.review-submit');
-  var formReviewMarkMin = 3;
-  var formReviewFieldError = form.querySelector('.review-field-error');
+  var formReviewRadioMarkMin = 3;
 
   formOpenButton.onclick = function(evt) {
     evt.preventDefault();
@@ -25,81 +24,73 @@
     evt.preventDefault();
     formContainer.classList.add('invisible');
   };
-  formReviewSubmit.disabled = 'true';
+
+  formReviewSubmit.disabled = true;
   formReviewFieldName.required = true;
-  formReviewFieldText.required = isRequired();
   formValidation();
 
-  /** Проверка обязательно ли поле */
-  for (var i = 0; i < formReviewMark.length; i++) {
-    formReviewMark[i].addEventListener('change', function() {
-      formReviewFieldText.required = isRequired();
+  /** Устанавливаем обработчик на проверку оценки */
+  for (var i = 0; i < formReviewRadioMark.length; i++) {
+    formReviewRadioMark[i].addEventListener('change', function() {
+      formReviewFieldText.required = fieldIsRequired();
       formValidation();
     });
   }
-  function isRequired() {
-    return formReviewMark.value < formReviewMarkMin;
+  function fieldIsRequired() {
+    return formReviewRadioMark.value < formReviewRadioMarkMin;
   }
-  /** Проверка валидности поля */
-  function isValidated(field) {
-    if (!field.validity.valid) {
-      return false;
-    } else {
-      return true;
-    }
+
+  /**
+   * Переключение подсказок
+   *
+   * @param {HTMLDivElement} field
+   * @param {boolean} status
+   */
+
+  function statusIsToggled(field, status) {
+    return field.classList.toggle('invisible', status);
   }
-  /** Проверка для доп задания */
-  function isError(field) {
-    if (!field.validity.valid) {
-      formReviewFieldError.innerHTML = field.validationMessage;
-    } else {
-      formReviewFieldError.innerHTML = '';
-    }
+
+  /**
+   * Проверка валидности поля
+   *
+   * @param {HTMLInputElement} field
+   */
+
+  function fieldIsValidated(field) {
+    return field.validity.valid;
   }
+
+  /**
+   *  Проверка валидности формы
+   *
+   * @param {boolean} status
+   */
+  function formIsValidated(status) {
+    statusIsToggled(formReviewStatus, status);
+    formReviewSubmit.disabled = !status;
+  }
+
   /** Валидация */
   function formValidation() {
-    var nameStatus = isValidated(formReviewFieldName);
+    var nameStatus = fieldIsValidated(formReviewFieldName);
+    var textStatus = fieldIsValidated(formReviewFieldText);
+
+    formIsValidated(nameStatus);
+
     /** Если отзыв является обязательным для заполнения то */
-    if (formReviewFieldText.required === true) {
-      formReviewFields.classList.remove('invisible'); /** Убираем invisible с блока подсказок */
-      formReviewFieldsText.classList.remove('invisible'); /** Убираем invisible с подсказки о отзыве */
-      formReviewSubmit.disabled = true; /** Дизеблим кнопку */
+    if (formReviewFieldText.required) {
 
-      var textStatus = isValidated(formReviewFieldText); /** Дизеблим кнопку */
-
-      var formValid = nameStatus && textStatus;
-
-      if (formValid === true) { /** Если оба поля заполнены то */
-        formReviewSubmit.disabled = false; /** Убираем дизейбл с кнопки */
-        formReviewFields.classList.toggle('invisible', formValid); /** Ставим invisible блоку подсказок */
-      }
-
-      formReviewFieldsName.classList.toggle('invisible', nameStatus); /** Переключаем подсказку для поля имя */
-      formReviewFieldsText.classList.toggle('invisible', textStatus); /** Переключаем подсказку для поля отзыв */
-
-
-    /** Если отзыв не является обязательным для заполнения то */
-    } else {
-      formReviewFieldsText.classList.add('invisible'); /** Ставим invisible подсказке о отзыве */
-
-      if (nameStatus === true) { /** Если по Имя заполнено то */
-        formReviewSubmit.disabled = false; /** Убираем дизейбл с кнопки */
-        formReviewFields.classList.toggle('invisible'); /** Ставим invisible блоку подсказок */
-      } else { /** Иначе ставим дизейбл кнопке */
-        formReviewSubmit.disabled = true;
-      }
-      formReviewFields.classList.toggle('invisible', nameStatus); /** Переключаем блок с подсказкой */
-      formReviewFieldsName.classList.toggle('invisible', nameStatus); /** Переключаем подсказку для поля имя */
+      statusIsToggled(formReviewStatus, false); /** Убираем invisible с блока подсказок */
+      statusIsToggled(formReviewStatusText, !textStatus); /** Убираем invisible с подсказки о отзыве */
+      formIsValidated(nameStatus && textStatus);
     }
+
+    statusIsToggled(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
+    statusIsToggled(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
   }
 
-  formReviewFieldName.addEventListener('input', function() {
-    formValidation();
-    isError(formReviewFieldName);
-  });
-
-  formReviewFieldText.addEventListener('input', function() {
-    formValidation();
-  });
+  formReviewFieldName.addEventListener('input', formValidation);
+  formReviewFieldText.addEventListener('input', formValidation);
 
 })();
