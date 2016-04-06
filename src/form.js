@@ -43,7 +43,7 @@
   /**
    * Переключение подсказок
    *
-   * @param {HTMLInputElement} field
+   * @param {HTMLDivElement} field
    * @param {boolean} status
    */
 
@@ -67,12 +67,8 @@
    * @param {boolean} status
    */
   function formIsValidated(status) {
-    if (status) {
-      formReviewSubmit.disabled = false;
-      statusIsToggled(formReviewStatus, status);
-    } else {
-      formReviewSubmit.disabled = true;
-    }
+    statusIsToggled(formReviewStatus, status);
+    formReviewSubmit.disabled = !status;
   }
 
   /** Валидация */
@@ -94,12 +90,7 @@
     statusIsToggled(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
   }
 
-  formReviewFieldName.addEventListener('input', function() {
-    formValidation();
-  });
-
-  formReviewFieldText.addEventListener('input', function() {
-    formValidation();
-  });
+  formReviewFieldName.addEventListener('input', formValidation);
+  formReviewFieldText.addEventListener('input', formValidation);
 
 })();
