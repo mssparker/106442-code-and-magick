@@ -6,14 +6,14 @@
   var formCloseButton = document.querySelector('.review-form-close');
 
   var form = formContainer.querySelector('.review-form');
-  var formReviewMark = form.elements['review-mark'];
+  var formReviewRadioMark = form.elements['review-mark'];
   var formReviewFieldName = form.elements['review-name'];
   var formReviewFieldText = form.elements['review-text'];
   var formReviewStatus = form.querySelector('.review-fields');
   var formReviewStatusName = form.querySelector('.review-fields-name');
   var formReviewStatusText = form.querySelector('.review-fields-text');
   var formReviewSubmit = form.querySelector('.review-submit');
-  var formReviewMarkMin = 3;
+  var formReviewRadioMarkMin = 3;
 
   formOpenButton.onclick = function(evt) {
     evt.preventDefault();
@@ -25,33 +25,47 @@
     formContainer.classList.add('invisible');
   };
 
-
   formReviewSubmit.disabled = true;
   formReviewFieldName.required = true;
   formValidation();
 
   /** Устанавливаем обработчик на проверку оценки */
-  for (var i = 0; i < formReviewMark.length; i++) {
-    formReviewMark[i].addEventListener('change', function() {
-      formReviewFieldText.required = isRequired();
+  for (var i = 0; i < formReviewRadioMark.length; i++) {
+    formReviewRadioMark[i].addEventListener('change', function() {
+      formReviewFieldText.required = fieldIsRequired();
       formValidation();
     });
   }
-  function isRequired() {
-    return formReviewMark.value < formReviewMarkMin;
+  function fieldIsRequired() {
+    return formReviewRadioMark.value < formReviewRadioMarkMin;
   }
 
-  /** Переключение подсказок */
+  /**
+   * Переключение подсказок
+   *
+   * @param {HTMLInputElement} field
+   * @param {boolean} status
+   */
+
   function statusIsToggled(field, status) {
     return field.classList.toggle('invisible', status);
   }
 
-  /** Проверка валидности поля */
+  /**
+   * Проверка валидности поля
+   *
+   * @param {HTMLInputElement} field
+   */
+
   function fieldIsValidated(field) {
     return field.validity.valid;
   }
 
-  /** Проверка валидности формы */
+  /**
+   *  Проверка валидности формы
+   *
+   * @param {boolean} status
+   */
   function formIsValidated(status) {
     if (status) {
       formReviewSubmit.disabled = false;
