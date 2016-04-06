@@ -1,6 +1,7 @@
 'use strict';
 
 (function() {
+  var browserCookies = require('browser-cookies');
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
   var formCloseButton = document.querySelector('.review-form-close');
@@ -15,19 +16,13 @@
   var formReviewSubmit = form.querySelector('.review-submit');
   var formReviewRadioMarkMin = 3;
 
-  formOpenButton.onclick = function(evt) {
-    evt.preventDefault();
-    formContainer.classList.remove('invisible');
-  };
-
-  formCloseButton.onclick = function(evt) {
-    evt.preventDefault();
-    formContainer.classList.add('invisible');
-  };
-
   formReviewSubmit.disabled = true;
   formReviewFieldName.required = true;
   formValidation();
+
+
+  formReviewRadioMark.value = browserCookies.get('formReviewRadioMark') || formReviewRadioMark.value;
+  formReviewFieldName.value = browserCookies.get('formReviewFieldName') || formReviewFieldName.value;
 
   /** Устанавливаем обработчик на проверку оценки */
   for (var i = 0; i < formReviewRadioMark.length; i++) {
@@ -102,4 +97,29 @@
     formValidation();
   });
 
+  /**
+   * @param {Event} evt
+   */
+  form.onsubmit = function(evt) {
+    evt.preventDefault();
+
+    var dayToday = new Date();
+    var dayMyBirth = new Date(dayToday.getFullYear(), 9, 2);
+    var dateDifference = dayToday.valueOf() - dayMyBirth.valueOf();
+    var formattedDateToExpire = new Date(dayToday.valueOf() + dateDifference).toUTCString();
+
+    browserCookies.set('formReviewRadioMark', formReviewRadioMark.value, { expires: formattedDateToExpire });
+    browserCookies.set('formReviewFieldName', formReviewFieldName.value, { expires: formattedDateToExpire });
+    this.submit();
+  };
+
+  formOpenButton.onclick = function(evt) {
+    evt.preventDefault();
+    formContainer.classList.remove('invisible');
+  };
+
+  formCloseButton.onclick = function(evt) {
+    evt.preventDefault();
+    formContainer.classList.add('invisible');
+  };
 })();
