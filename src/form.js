@@ -14,6 +14,7 @@
   var formReviewStatusText = form.querySelector('.review-fields-text');
   var formReviewSubmit = form.querySelector('.review-submit');
   var formReviewRadioMarkMin = 3;
+  var formReviewFieldError = form.querySelector('.review-field-error');
 
   formOpenButton.onclick = function(evt) {
     evt.preventDefault();
@@ -27,6 +28,7 @@
 
   formReviewSubmit.disabled = true;
   formReviewFieldName.required = true;
+  formReviewStatusText.classList.toggle('invisible', true);
   formValidation();
 
   /** Устанавливаем обработчик на проверку оценки */
@@ -73,24 +75,22 @@
 
   /** Валидация */
   function formValidation() {
-    var nameStatus = fieldIsValidated(formReviewFieldName);
-    var textStatus = fieldIsValidated(formReviewFieldText);
-
-    formIsValidated(nameStatus);
-
-    /** Если отзыв является обязательным для заполнения то */
-    if (formReviewFieldText.required) {
-
-      statusIsToggled(formReviewStatus, false); /** Убираем invisible с блока подсказок */
-      statusIsToggled(formReviewStatusText, !textStatus); /** Убираем invisible с подсказки о отзыве */
-      formIsValidated(nameStatus && textStatus);
-    }
-
-    statusIsToggled(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
-    statusIsToggled(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
+    var invalidEvent = new Event('invalid');
+    form.dispatchEvent(invalidEvent);
   }
 
   formReviewFieldName.addEventListener('input', formValidation);
   formReviewFieldText.addEventListener('input', formValidation);
+  form.addEventListener('invalid', function() {
+    var nameStatus = fieldIsValidated(formReviewFieldName);
+    var textStatus = fieldIsValidated(formReviewFieldText);
+
+    formIsValidated(nameStatus && textStatus);
+
+    statusIsToggled(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
+    statusIsToggled(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
+
+    formReviewFieldError.innerHTML = formReviewFieldName.validationMessage;
+  });
 
 })();
