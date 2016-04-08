@@ -13,8 +13,9 @@
   var formReviewStatusName = form.querySelector('.review-fields-name');
   var formReviewStatusText = form.querySelector('.review-fields-text');
   var formReviewSubmit = form.querySelector('.review-submit');
+  var formReviewFieldNameError = form.querySelector('.review-field-name-error');
+  var formReviewFieldTextError = form.querySelector('.review-field-text-error');
   var formReviewRadioMarkMin = 3;
-  var formReviewFieldError = form.querySelector('.review-field-error');
 
   formOpenButton.onclick = function(evt) {
     evt.preventDefault();
@@ -90,7 +91,8 @@
     statusIsToggled(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
     statusIsToggled(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
 
-    formReviewFieldError.innerHTML = formReviewFieldName.validationMessage;
+    formReviewFieldNameError.innerHTML = formReviewFieldName.validationMessage;
+    formReviewFieldTextError.innerHTML = formReviewFieldText.validationMessage;
   });
 
 })();
