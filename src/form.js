@@ -97,9 +97,15 @@
     evt.preventDefault();
 
     var dayToday = new Date();
-    var dayMyBirth = new Date(dayToday.getFullYear(), 9, 2);
-    var dateDifference = dayToday.valueOf() - dayMyBirth.valueOf();
-    var formattedDateToExpire = new Date(dayToday.valueOf() + dateDifference).toUTCString();
+    var dayMyBirth = new Date(dayToday.getFullYear(), 8, 2);
+    var msec = 1000 * 60 * 60 * 24;
+
+    if (dayMyBirth > dayToday) {
+      dayMyBirth.setFullYear(dayMyBirth.getFullYear() - 1);
+    }
+
+    var dateDifference = Math.floor((dayToday - dayMyBirth) / msec);
+    var formattedDateToExpire = new Date(dayToday.valueOf() + dateDifference * msec).toUTCString();
 
     browserCookies.set('formReviewRadioMark', formReviewRadioMark.value, { expires: formattedDateToExpire });
     browserCookies.set('formReviewFieldName', formReviewFieldName.value, { expires: formattedDateToExpire });
