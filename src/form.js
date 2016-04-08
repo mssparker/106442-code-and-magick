@@ -14,10 +14,13 @@
   var formReviewStatusName = form.querySelector('.review-fields-name');
   var formReviewStatusText = form.querySelector('.review-fields-text');
   var formReviewSubmit = form.querySelector('.review-submit');
+  var formReviewFieldNameError = form.querySelector('.review-field-name-error');
+  var formReviewFieldTextError = form.querySelector('.review-field-text-error');
   var formReviewRadioMarkMin = 3;
 
   formReviewSubmit.disabled = true;
   formReviewFieldName.required = true;
+  formReviewStatusText.classList.toggle('invisible', true);
   formValidation();
 
 
@@ -38,7 +41,7 @@
   /**
    * Переключение подсказок
    *
-   * @param {HTMLInputElement} field
+   * @param {HTMLDivElement} field
    * @param {boolean} status
    */
 
@@ -62,39 +65,29 @@
    * @param {boolean} status
    */
   function formIsValidated(status) {
-    if (status) {
-      formReviewSubmit.disabled = false;
-      statusIsToggled(formReviewStatus, status);
-    } else {
-      formReviewSubmit.disabled = true;
-    }
+    statusIsToggled(formReviewStatus, status);
+    formReviewSubmit.disabled = !status;
   }
 
   /** Валидация */
   function formValidation() {
+    var invalidEvent = new Event('invalid');
+    form.dispatchEvent(invalidEvent);
+  }
+
+  formReviewFieldName.addEventListener('input', formValidation);
+  formReviewFieldText.addEventListener('input', formValidation);
+  form.addEventListener('invalid', function() {
     var nameStatus = fieldIsValidated(formReviewFieldName);
     var textStatus = fieldIsValidated(formReviewFieldText);
 
-    formIsValidated(nameStatus);
-
-    /** Если отзыв является обязательным для заполнения то */
-    if (formReviewFieldText.required) {
-
-      statusIsToggled(formReviewStatus, false); /** Убираем invisible с блока подсказок */
-      statusIsToggled(formReviewStatusText, !textStatus); /** Убираем invisible с подсказки о отзыве */
-      formIsValidated(nameStatus && textStatus);
-    }
+    formIsValidated(nameStatus && textStatus);
 
     statusIsToggled(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
     statusIsToggled(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
-  }
 
-  formReviewFieldName.addEventListener('input', function() {
-    formValidation();
-  });
-
-  formReviewFieldText.addEventListener('input', function() {
-    formValidation();
+    formReviewFieldNameError.innerHTML = formReviewFieldName.validationMessage;
+    formReviewFieldTextError.innerHTML = formReviewFieldText.validationMessage;
   });
 
   /**
