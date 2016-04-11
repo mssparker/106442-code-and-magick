@@ -53,8 +53,6 @@
       reviewRating.style.width = reviewRatingSize + 'px';
     }
 
-    container.appendChild(reviewCloned);
-
     reviewAuthorImage.onload = function(evt) {
       clearTimeout(reviewAuthorImageLoadTimeout);
       reviewAuthor.src = evt.target.src;
