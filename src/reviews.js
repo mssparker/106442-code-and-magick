@@ -29,11 +29,10 @@
 
   /**
   * @param {Object} data
-  * @param {HTMLElement} container
   * @return {HTMLElement}
   */
 
-  var getReviewElement = function(data, container) {
+  var createReviewElement = function(data) {
     var reviewCloned = reviewToClone.cloneNode(true);
     var reviewRating = reviewCloned.querySelector('.review-rating');
     var reviewAuthor = reviewCloned.querySelector('.review-author');
@@ -53,7 +52,7 @@
       reviewRating.style.width = reviewRatingSize + 'px';
     }
 
-    container.appendChild(reviewCloned);
+    reviewsContainer.appendChild(reviewCloned);
 
     reviewAuthorImage.onload = function(evt) {
       clearTimeout(reviewAuthorImageLoadTimeout);
@@ -74,9 +73,7 @@
     return reviewCloned;
   };
 
-  window.reviews.forEach(function(review) {
-    getReviewElement(review, reviewsContainer);
-  });
+  window.reviews.forEach(createReviewElement);
 
   toggleFilter(reviewsFilter, false);
 })();
