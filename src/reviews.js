@@ -4,13 +4,13 @@
   var reviewsFilter = document.querySelector('.reviews-filter');
   var reviewsContainer = document.querySelector('.reviews-list');
   var templateElement = document.querySelector('template');
-  var reviewToClone;
+  var reviewToClone = templateElement.content.querySelector('.review');
 
-  if ('content' in templateElement) {
-    reviewToClone = templateElement.content.querySelector('.review');
-  } else {
-    reviewToClone = templateElement.querySelector('.review');
-  }
+  //if ('content' in templateElement) {
+ //   reviewToClone = templateElement.content.querySelector('.review');
+  //} else {
+  //  reviewToClone = templateElement.querySelector('.review');
+  //}
 
   /** @constant {number} */
   var IMAGE_LOAD_TIMEOUT = 10000;
@@ -32,7 +32,7 @@
   * @return {HTMLElement}
   */
 
-  var createReviewElement = function(data) {
+  var createReviewElement = function(data, reviewToClone) {
     var reviewCloned = reviewToClone.cloneNode(true);
     var reviewRating = reviewCloned.querySelector('.review-rating');
     var reviewAuthor = reviewCloned.querySelector('.review-author');
@@ -73,7 +73,9 @@
     return reviewCloned;
   };
 
-  window.reviews.forEach(createReviewElement);
+  window.reviews.forEach(function(review) {
+    createReviewElement(review);
+  });
 
   toggleFilter(reviewsFilter, false);
 })();
