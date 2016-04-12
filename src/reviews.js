@@ -121,9 +121,9 @@
   };
 
 
-  var renderReviews = function(reviews) {
+  var renderReviews = function(rw) {
     reviewsContainer.innerHTML = '';
-    reviews.forEach(function(review) {
+    rw.forEach(function(review) {
       var createReview = createReviewElement(review, reviewToClone);
       reviewsContainer.appendChild(createReview);
     });
@@ -134,7 +134,7 @@
    * @param {Array.<Object>} reviews
    * @param {string} filter
    */
-  var setFiltrationEnabled = function(reviews, filter) {
+  var setFiltrationEnabled = function(rw, filter) {
     var reviewsToFilter = reviews.slice(0);
 
     switch (filter) {
@@ -162,11 +162,11 @@
     return reviewsToFilter;
   };
 
-  var getRecentReviews = function(reviews) {
+  var getRecentReviews = function(rw) {
     var currentDate = new Date();
     var recentDate = Math.floor(currentDate.valueOf() - 14);
 
-    reviews = reviews.filter(function(review) {
+    reviews = rw.filter(function(review) {
       var reviewDate = new Date(review.date).valueOf();
 
       return reviewDate <= recentDate;
