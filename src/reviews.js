@@ -1,9 +1,11 @@
 'use strict';
 
 (function() {
-  var reviewsFilter = document.querySelector('.reviews-filter');
+  var reviewsFilters = document.querySelector('.reviews-filter');
+  var reviewsFilter = reviewsFilters['reviews'];
   var reviewsContainer = document.querySelector('.reviews-list');
   var templateElement = document.querySelector('template');
+  var reviewsList = document.querySelector('.reviews');
   var reviewToClone;
 
   if ('content' in templateElement) {
@@ -17,6 +19,25 @@
   var RATING_DEFAULT_SIZE = 30;
   var IMAGE_SIZE = 30;
 
+  /** @constant {string} */
+  var REVIEWS_LOAD_URL = '//o0.github.io/assets/json/reviews.json';
+
+  /** @type {Array.<Object>} */
+  var reviews = [];
+
+  /** @enum {number} */
+  var Filter = {
+    'ALL': 'reviews-all',
+    'RECENT': 'reviews-recent',
+    'GOOD': 'reviews-good',
+    'BAD': 'reviews-bad',
+    'POPULAR': 'reviews-popular'
+  };
+
+
+  /** @constant {Filter} */
+  var DEFAULT_FILTER = Filter.ALL;
+
   /**
   * toggle invisible for filter
   * @param  {Element} filter
@@ -26,7 +47,7 @@
     filter.classList.toggle('invisible', flag );
   }
 
-  toggleFilter(reviewsFilter, true);
+  toggleFilter(reviewsFilters, true);
 
   /**
   * @param {Object} data
@@ -72,10 +93,111 @@
     return reviewCloned;
   };
 
-  window.reviews.forEach(function(review) {
-    var createReview = createReviewElement(review, reviewToClone);
-    reviewsContainer.appendChild(createReview);
+  function reviewsFailure() {
+    reviewsList.classList.add('reviews-load-failure');
+  }
+
+  /** @param {function(Array.<Object>)} callback */
+  var getReviews = function(callback) {
+    var xhr = new XMLHttpRequest();
+
+    /** @param {ProgressEvent} */
+    xhr.onload = function(evt) {
+      reviewsList.classList.add('reviews-list-loading');
+      var loadedData = JSON.parse(evt.target.response);
+      callback(loadedData);
+      reviewsList.classList.remove('reviews-list-loading');
+    };
+    xhr.onerror = function() {
+      reviewsFailure();
+    };
+
+    xhr.timeout = IMAGE_LOAD_TIMEOUT;
+    xhr.ontimeout = function() {
+      reviewsFailure();
+    };
+    xhr.open('GET', REVIEWS_LOAD_URL);
+    xhr.send();
+  };
+
+
+  var renderReviews = function(reviews) {
+    reviewsContainer.innerHTML = '';
+    reviews.forEach(function(review) {
+      var createReview = createReviewElement(review, reviewToClone);
+      reviewsContainer.appendChild(createReview);
+    });
+  };
+
+
+  /**
+   * @param {Array.<Object>} reviews
+   * @param {string} filter
+   */
+  var setFiltrationEnabled = function(reviews, filter) {
+    var reviewsToFilter = reviews.slice(0);
+
+    switch (filter) {
+      case Filter.ALL:
+        break;
+      case Filter.RECENT:
+        return getRecentReviews(reviewsToFilter);
+      case Filter.GOOD:
+        reviewsToFilter = reviewsToFilter.sort(function(a, b) {
+          return b.rating - a.rating;
+        });
+        break;
+      case Filter.BAD:
+        reviewsToFilter = reviewsToFilter.sort(function(a, b) {
+          return a.rating - b.rating;
+        });
+        break;
+      case Filter.POPULAR:
+        reviewsToFilter = reviewsToFilter.sort(function(a, b) {
+          return b.review_usefulness - a.review_usefulness;
+        });
+        break;
+    }
+
+    return reviewsToFilter;
+  };
+
+  var getRecentReviews = function(reviews) {
+    var currentDate = new Date();
+    var recentDate = Math.floor(currentDate.valueOf() - 14);
+
+    reviews = reviews.filter(function(review) {
+      var reviewDate = new Date(review.date).valueOf();
+
+      return reviewDate <= recentDate;
+    });
+
+    reviews.sort(function(a, b) {
+      var earliestDate = new Date(a.date);
+      var latestDate = new Date(b.date);
+
+      return latestDate - earliestDate;
+    });
+
+    return reviews;
+  };
+
+  /** @param {Filter} filter */
+  var setFilterEnabled = function(filter) {
+    var filteredReviews = setFiltrationEnabled(reviews, filter);
+    renderReviews(filteredReviews);
+  };
+
+  reviewsFilters.addEventListener('change', function() {
+    setFilterEnabled(reviewsFilter.value);
   });
 
-  toggleFilter(reviewsFilter, false);
+
+  getReviews(function(loadedReviews) {
+    reviews = loadedReviews;
+    setFilterEnabled(DEFAULT_FILTER);
+  });
+
+
+  toggleFilter(reviewsFilters, false);
 })();
