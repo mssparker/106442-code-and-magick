@@ -94,18 +94,26 @@
   };
 
   function reviewsFailure() {
+    reviewsList.classList.remove('reviews-list-loading');
     reviewsList.classList.add('reviews-load-failure');
   }
 
   /** @param {function(Array.<Object>)} callback */
   var getReviews = function(callback) {
     var xhr = new XMLHttpRequest();
+    reviewsList.classList.add('reviews-list-loading');
 
     /** @param {ProgressEvent} */
     xhr.onload = function(evt) {
-      reviewsList.classList.add('reviews-list-loading');
-      var loadedData = JSON.parse(evt.target.response);
-      callback(loadedData);
+      if (evt.target.status === 200) {
+        try {
+          var loadedData = JSON.parse(evt.target.response);
+          callback(loadedData);
+        } catch (e) {
+          reviewsList.classList.add('reviews-load-failure');
+        }
+      }
+
       reviewsList.classList.remove('reviews-list-loading');
     };
     xhr.onerror = function() {
@@ -121,9 +129,9 @@
   };
 
 
-  var renderReviews = function(reviews) {
+  var renderReviews = function(rw) {
     reviewsContainer.innerHTML = '';
-    reviews.forEach(function(review) {
+    rw.forEach(function(review) {
       var createReview = createReviewElement(review, reviewToClone);
       reviewsContainer.appendChild(createReview);
     });
@@ -134,8 +142,8 @@
    * @param {Array.<Object>} reviews
    * @param {string} filter
    */
-  var setFiltrationEnabled = function(reviews, filter) {
-    var reviewsToFilter = reviews.slice(0);
+  var setFiltrationEnabled = function(rw, filter) {
+    var reviewsToFilter = rw.slice(0);
 
     switch (filter) {
       case Filter.ALL:
@@ -162,11 +170,11 @@
     return reviewsToFilter;
   };
 
-  var getRecentReviews = function(reviews) {
+  var getRecentReviews = function(rw) {
     var currentDate = new Date();
     var recentDate = Math.floor(currentDate.valueOf() - 14);
 
-    reviews = reviews.filter(function(review) {
+    reviews = rw.filter(function(review) {
       var reviewDate = new Date(review.date).valueOf();
 
       return reviewDate <= recentDate;
