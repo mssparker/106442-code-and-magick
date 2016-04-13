@@ -105,13 +105,13 @@
 
     /** @param {ProgressEvent} */
     xhr.onload = function(evt) {
-      if (evt.target.status == 200) {
+      if (evt.target.status === 200) {
         try {
           var loadedData = JSON.parse(evt.target.response);
+          callback(loadedData);
         } catch (e) {
           reviewsList.classList.add('reviews-load-failure');
         }
-        callback(loadedData);
       }
 
       reviewsList.classList.remove('reviews-list-loading');
