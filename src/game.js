@@ -750,4 +750,30 @@
   var game = new Game(document.querySelector('.demo'));
   game.initializeLevelAndStart();
   game.setGameStatus(window.Game.Verdict.INTRO);
+
+  var clouds = document.querySelector('.header-clouds');
+  var gameBlock = document.querySelector('.demo');
+
+  function parallaxClouds() {
+    clouds.style.backgroundPositionX = document.body.scrollTop / 2 + 'px';
+  }
+
+  function isVisible(elem) {
+    return elem.getBoundingClientRect().bottom >= 0;
+  }
+
+  function setParallaxAndPauseVerdict() {
+    if (isVisible(clouds)) {
+      parallaxClouds();
+    }
+
+    if (!isVisible(gameBlock)) {
+      game.setGameStatus(Game.Verdict.PAUSE);
+    }
+  }
+
+  window.addEventListener('scroll', function() {
+    setInterval(setParallaxAndPauseVerdict, 100);
+  });
+
 })();
