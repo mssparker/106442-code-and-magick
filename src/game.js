@@ -755,14 +755,18 @@
   var gameBlock = document.querySelector('.demo');
 
   function parallaxClouds() {
-    clouds.style.backgroundPositionX = document.body.scrollTop / 2 + 'px';
+    clouds.style.backgroundPosition = -window.pageYOffset + 'px';
+  }
+
+  function windowScrollListener() {
+    window.addEventListener('scroll', listener);
   }
 
   function isVisible(elem) {
     return elem.getBoundingClientRect().bottom >= 0;
   }
 
-  function setParallaxAndPauseVerdict() {
+  function checkVisibility() {
     if (isVisible(clouds)) {
       parallaxClouds();
     }
@@ -772,8 +776,15 @@
     }
   }
 
-  window.addEventListener('scroll', function() {
-    setInterval(setParallaxAndPauseVerdict, 100);
-  });
+  function listener() {
+    checkVisibility();
+    window.removeEventListener('scroll', listener);
 
+    setTimeout( function() {
+      windowScrollListener();
+    }, 100);
+  }
+
+  windowScrollListener();
+  parallaxClouds();
 })();

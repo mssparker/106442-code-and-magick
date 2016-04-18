@@ -135,7 +135,7 @@
   };
 
   /**
-   * @param {Array} reviews
+   * @param {Array} rw
    * @param {number} page
    * @param {number} pageSize
    * @return {boolean}
@@ -155,7 +155,7 @@
 
 
   /**
-   * @param {Array.<Object>} reviews
+   * @param {Array.<Object>} reviewsToRender
    * @param {number} page
    */
   var renderReviews = function(reviewsToRender, page, replace) {
@@ -180,7 +180,7 @@
 
 
   /**
-   * @param {Array.<Object>} reviews
+   * @param {Array.<Object>} rw
    * @param {string} filter
    */
   var getFilteredReviews = function(rw, filter) {
