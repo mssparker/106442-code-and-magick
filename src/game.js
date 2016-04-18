@@ -756,7 +756,7 @@
 
 
   function parallaxClouds() {
-    clouds.style.backgroundPositionX = document.body.scrollTop / 2 + 'px';
+    clouds.style.backgroundPosition = -window.pageYOffset + 'px';
   }
 
   function isVisible(elem) {
@@ -779,4 +779,5 @@
     scrollTimeout = setTimeout(setParallaxAndPauseVerdict, 100);
   });
 
+  parallaxClouds();
 })();
