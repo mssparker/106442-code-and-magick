@@ -754,6 +754,7 @@
   var clouds = document.querySelector('.header-clouds');
   var gameBlock = document.querySelector('.demo');
 
+
   function parallaxClouds() {
     clouds.style.backgroundPositionX = document.body.scrollTop / 2 + 'px';
   }
@@ -772,8 +773,10 @@
     }
   }
 
+  var scrollTimeout;
   window.addEventListener('scroll', function() {
-    setInterval(setParallaxAndPauseVerdict, 100);
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(setParallaxAndPauseVerdict, 100);
   });
 
 })();
