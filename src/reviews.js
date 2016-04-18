@@ -19,7 +19,7 @@
   var RATING_DEFAULT_SIZE = 30;
   var IMAGE_SIZE = 30;
   var PAGE_SIZE = 3;
-  var PAGE_NUMBER = 0;
+  var pageNumber = 0;
 
 
   /** @constant {string} */
@@ -135,7 +135,7 @@
   };
 
   /**
-   * @param {Array} hotels
+   * @param {Array} reviews
    * @param {number} page
    * @param {number} pageSize
    * @return {boolean}
@@ -146,9 +146,9 @@
 
   var setShowMoreReviews = function() {
     showMoreReviewsButton.addEventListener('click', function() {
-      if (isNextPageAvailable(filteredReviews, PAGE_NUMBER, PAGE_SIZE)) {
-        PAGE_NUMBER++;
-        renderReviews(filteredReviews, PAGE_NUMBER);
+      if (isNextPageAvailable(filteredReviews, pageNumber, PAGE_SIZE)) {
+        pageNumber++;
+        renderReviews(filteredReviews, pageNumber);
       }
     });
   };
@@ -234,15 +234,15 @@
   /** @param {Filter} filter */
   var setFilterEnabled = function(filter) {
     filteredReviews = getFilteredReviews(reviews, filter);
-    PAGE_NUMBER = 0;
-    renderReviews(filteredReviews, PAGE_NUMBER, true);
+    pageNumber = 0;
+    renderReviews(filteredReviews, pageNumber, true);
   };
 
   function setFiltersEnabled() {
     reviewsFilters.addEventListener('click', function(evt) {
 
       if (evt.target.type === 'radio') {
-        setFilterEnabled(evt.target.id);
+        setFilterEnabled(evt.target.value);
       }
     });
   }
