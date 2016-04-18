@@ -763,7 +763,16 @@
     return elem.getBoundingClientRect().bottom >= 0;
   }
 
-  function setParallaxAndPauseVerdict() {
+  function checkVisibility() {
+    isVisible(clouds);
+    isVisible(gameBlock);
+  }
+
+  var scrollTimeout;
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(checkVisibility, 100);
+
     if (isVisible(clouds)) {
       parallaxClouds();
     }
@@ -771,12 +780,6 @@
     if (!isVisible(gameBlock)) {
       game.setGameStatus(Game.Verdict.PAUSE);
     }
-  }
-
-  var scrollTimeout;
-  window.addEventListener('scroll', function() {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(setParallaxAndPauseVerdict, 100);
   });
 
   parallaxClouds();
