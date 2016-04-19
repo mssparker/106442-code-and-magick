@@ -776,14 +776,14 @@
     }
   }
 
-  var listener = function() {
+  function listener() {
     checkVisibility();
     window.removeEventListener('scroll', listener);
 
     setTimeout( function() {
       windowScrollListener();
     }, 100);
-  };
+  }
 
   windowScrollListener();
   parallaxClouds();
