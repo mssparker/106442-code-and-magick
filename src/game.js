@@ -754,9 +754,12 @@
   var clouds = document.querySelector('.header-clouds');
   var gameBlock = document.querySelector('.demo');
 
-
   function parallaxClouds() {
     clouds.style.backgroundPosition = -window.pageYOffset + 'px';
+  }
+
+  function windowScrollListener() {
+    window.addEventListener('scroll', listener);
   }
 
   function isVisible(elem) {
@@ -764,15 +767,6 @@
   }
 
   function checkVisibility() {
-    isVisible(clouds);
-    isVisible(gameBlock);
-  }
-
-  var scrollTimeout;
-  window.addEventListener('scroll', function() {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(checkVisibility, 100);
-
     if (isVisible(clouds)) {
       parallaxClouds();
     }
@@ -780,7 +774,17 @@
     if (!isVisible(gameBlock)) {
       game.setGameStatus(Game.Verdict.PAUSE);
     }
-  });
+  }
 
+  var listener = function() {
+    checkVisibility();
+    window.removeEventListener('scroll', listener);
+
+    setTimeout( function() {
+      windowScrollListener();
+    }, 100);
+  };
+
+  windowScrollListener();
   parallaxClouds();
 })();
