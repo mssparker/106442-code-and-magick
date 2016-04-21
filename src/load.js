@@ -1,5 +1,5 @@
 /**
- * @fileoverview ????? ??? ???????? ??????
+ * @fileoverview метод для загрузки данных
  */
 
 'use strict';
@@ -10,14 +10,30 @@ var utils = require('./utils');
 var LOAD_TIMEOUT = 10000;
 var LOAD_STATUS_SUCCESS = 200;
 
-/**
- * @param {string} loadUrl
- * @param {function(Object)} callback
- */
+/** @constant {string} */
+var loadUrl = '//o0.github.io/assets/json/reviews.json';
+var loadStatusProgress = 'reviews-list-loading';
+var loadStatusFailure = 'review-load-failure';
+var loadContainer = document.querySelector('.reviews');
 
-var load = function(loadUrl, loadStatusProgress, loadStatusFailure, callback) {
+function loadProgress() {
+  utils.setLoadStatus(loadContainer, loadStatusProgress, true);
+}
+
+function loadFailure() {
+  utils.setLoadStatus(loadContainer, loadStatusProgress, false);
+  utils.setLoadStatus(loadContainer, loadStatusFailure, true);
+}
+
+function loadSuccess() {
+  utils.setLoadStatus(loadContainer, loadStatusProgress, false);
+}
+
+/** @param {function(Array.<Object>)} callback */
+
+var load = function(callback) {
   var xhr = new XMLHttpRequest();
-  utils.setLoadStatus(loadStatusProgress, true);
+  loadProgress();
 
   /** @param {ProgressEvent} */
   xhr.onload = function(evt) {
@@ -26,22 +42,19 @@ var load = function(loadUrl, loadStatusProgress, loadStatusFailure, callback) {
         var loadedData = JSON.parse(evt.target.response);
         callback(loadedData);
       } catch (e) {
-        utils.setLoadStatus(loadStatusProgress, false);
-        utils.setLoadStatus(loadStatusFailure, true);
+        loadFailure();
       }
     }
-    utils.setLoadStatus(loadStatusProgress, false);
+    loadSuccess();
   };
 
   xhr.onerror = function() {
-    utils.setLoadStatus(loadStatusProgress, false);
-    utils.setLoadStatus(loadStatusFailure, true);
+    loadFailure();
   };
 
   xhr.timeout = LOAD_TIMEOUT;
   xhr.open('GET', loadUrl);
   xhr.send();
 };
-
 
 module.exports = load;

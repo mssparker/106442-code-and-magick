@@ -9,7 +9,6 @@
   var reviewsFilters = document.querySelector('.reviews-filter');
   var reviewsContainer = document.querySelector('.reviews-list');
   var templateElement = document.querySelector('template');
-  var reviewsList = document.querySelector('.reviews');
   var showMoreReviewsButton = document.querySelector('.reviews-controls-more');
   var reviewToClone;
 
@@ -25,12 +24,6 @@
   var IMAGE_SIZE = 30;
   var PAGE_SIZE = 3;
   var pageNumber = 0;
-
-
-  /** @constant {string} */
-  var REVIEWS_LOAD_URL = '//o0.github.io/assets/json/reviews.json';
-  var LOAD_PROGRESS = 'reviews-list-loading';
-  var LOAD_FAILURE = 'review-load-failure';
 
   /** @type {Array.<Object>} */
   var reviews = [];
@@ -90,43 +83,6 @@
 
     return reviewCloned;
   };
-
-  /** @param {function(Array.<Object>)} callback */
-      /*
-
- function reviewsFailure() {
- reviewsList.classList.remove('reviews-list-loading');
- reviewsList.classList.add('reviews-load-failure');
- }
-  var getReviews = function(callback) {
-    var xhr = new XMLHttpRequest();
-    reviewsList.classList.add('reviews-list-loading');
-
-
-    xhr.onload = function(evt) {
-      if (evt.target.status === 200) {
-        try {
-          var loadedData = JSON.parse(evt.target.response);
-          callback(loadedData);
-        } catch (e) {
-          reviewsList.classList.add('reviews-load-failure');
-        }
-      }
-
-      reviewsList.classList.remove('reviews-list-loading');
-    };
-    xhr.onerror = function() {
-      reviewsFailure();
-    };
-
-    xhr.timeout = IMAGE_LOAD_TIMEOUT;
-    xhr.ontimeout = function() {
-      reviewsFailure();
-    };
-    xhr.open('GET', REVIEWS_LOAD_URL);
-    xhr.send();
-  };
-  */
 
   /**
    * @param {Array} rw
@@ -189,7 +145,7 @@
     });
   }
 
-  load(REVIEWS_LOAD_URL, LOAD_PROGRESS, LOAD_FAILURE, function(loadedReviews) {
+  load(function(loadedReviews) {
     reviews = loadedReviews;
     setFiltersEnabled(true);
     setFilterEnabled(DEFAULT_FILTER);
