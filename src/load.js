@@ -11,13 +11,13 @@ var LOAD_TIMEOUT = 10000;
 var LOAD_STATUS_SUCCESS = 200;
 
 /**
- * @param {string} load_url
+ * @param {string} loadUrl
  * @param {function(Object)} callback
  */
 
-var load = function(load_url, load_status_progress, load_status_failure, callback) {
+var load = function(loadUrl, loadStatusProgress, loadStatusFailure, callback) {
   var xhr = new XMLHttpRequest();
-  utils.setLoadStatus(load_status_progress, true);
+  utils.setLoadStatus(loadStatusProgress, true);
 
   /** @param {ProgressEvent} */
   xhr.onload = function(evt) {
@@ -26,20 +26,20 @@ var load = function(load_url, load_status_progress, load_status_failure, callbac
         var loadedData = JSON.parse(evt.target.response);
         callback(loadedData);
       } catch (e) {
-        utils.setLoadStatus(load_status_progress, false);
-        utils.setLoadStatus(load_status_failure, true);
+        utils.setLoadStatus(loadStatusProgress, false);
+        utils.setLoadStatus(loadStatusFailure, true);
       }
     }
-    utils.setLoadStatus(load_status_progress, false);
+    utils.setLoadStatus(loadStatusProgress, false);
   };
 
   xhr.onerror = function() {
-    utils.setLoadStatus(load_status_progress, false);
-    utils.setLoadStatus(load_status_failure, true);
+    utils.setLoadStatus(loadStatusProgress, false);
+    utils.setLoadStatus(loadStatusFailure, true);
   };
 
   xhr.timeout = LOAD_TIMEOUT;
-  xhr.open('GET', load_url);
+  xhr.open('GET', loadUrl);
   xhr.send();
 };
 

@@ -32,9 +32,6 @@
   var LOAD_PROGRESS = 'reviews-list-loading';
   var LOAD_FAILURE = 'review-load-failure';
 
-
-  var LOAD_CONTAINER = reviewsList;
-
   /** @type {Array.<Object>} */
   var reviews = [];
 
@@ -94,13 +91,13 @@
     return reviewCloned;
   };
 
-  function reviewsFailure() {
-    reviewsList.classList.remove('reviews-list-loading');
-    reviewsList.classList.add('reviews-load-failure');
-  }
-
   /** @param {function(Array.<Object>)} callback */
       /*
+
+ function reviewsFailure() {
+ reviewsList.classList.remove('reviews-list-loading');
+ reviewsList.classList.add('reviews-load-failure');
+ }
   var getReviews = function(callback) {
     var xhr = new XMLHttpRequest();
     reviewsList.classList.add('reviews-list-loading');
