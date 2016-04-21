@@ -10,7 +10,6 @@ var utils = require('./utils');
 var LOAD_TIMEOUT = 10000;
 var LOAD_STATUS_SUCCESS = 200;
 
-/** @constant {string} */
 var loadUrl = '//o0.github.io/assets/json/reviews.json';
 var loadStatusProgress = 'reviews-list-loading';
 var loadStatusFailure = 'review-load-failure';
