@@ -1,6 +1,9 @@
 'use strict';
 
 (function() {
+
+  var utils = require('./utils');
+
   var browserCookies = require('browser-cookies');
   var formContainer = document.querySelector('.overlay-container');
   var formOpenButton = document.querySelector('.reviews-controls-new');
@@ -20,7 +23,7 @@
 
   formReviewSubmit.disabled = true;
   formReviewFieldName.required = true;
-  formReviewStatusText.classList.toggle('invisible', true);
+  utils.toggleElementVisibility(formReviewStatusText, true);
   formValidation();
 
 
@@ -39,17 +42,6 @@
   }
 
   /**
-   * Переключение подсказок
-   *
-   * @param {HTMLDivElement} field
-   * @param {boolean} status
-   */
-
-  function statusIsToggled(field, status) {
-    return field.classList.toggle('invisible', status);
-  }
-
-  /**
    * Проверка валидности поля
    *
    * @param {HTMLInputElement} field
@@ -65,7 +57,7 @@
    * @param {boolean} status
    */
   function formIsValidated(status) {
-    statusIsToggled(formReviewStatus, status);
+    utils.toggleElementVisibility(formReviewStatus, status);
     formReviewSubmit.disabled = !status;
   }
 
@@ -83,8 +75,8 @@
 
     formIsValidated(nameStatus && textStatus);
 
-    statusIsToggled(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
-    statusIsToggled(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
+    utils.toggleElementVisibility(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
+    utils.toggleElementVisibility(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
 
     formReviewFieldNameError.innerHTML = formReviewFieldName.validationMessage;
     formReviewFieldTextError.innerHTML = formReviewFieldText.validationMessage;
