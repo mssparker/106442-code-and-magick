@@ -3,6 +3,7 @@
 (function() {
   var filter = require('./filter/filter');
   var FilterType = require('./filter/filter-type');
+  var domUtils = require('./dom-utils');
   var utils = require('./utils');
   var config = require('./config');
 
@@ -182,7 +183,7 @@
     });
   }
 
-  utils.load(config.loadUrl, config.loadStatus, function(loadedReviews) {
+  utils.load(config.loadUrl, domUtils.loadStatus, function(loadedReviews) {
     reviews = loadedReviews;
     setFiltersEnabled(true);
     setFilterEnabled(DEFAULT_FILTER);

@@ -19,22 +19,7 @@ module.exports = {
   /** Status for load utils
    * @type {object}
    * */
-  loadStatus: {
-    loadProgress: 'reviews-list-loading',
-    loadFailure: 'review-load-failure',
-    loadContainer: document.querySelector('.reviews'),
-
-    statusProgress: function() {
-      this.loadContainer.classList.add(this.loadProgress);
-    },
-
-    statusSuccess: function() {
-      this.loadContainer.classList.remove(this.loadProgress);
-    },
-
-    statusFailure: function() {
-      this.loadContainer.classList.remove(this.loadProgress);
-      this.loadContainer.classList.add(this.loadFailure);
-    }
+  sels: {
+    reviews: '.reviews'
   }
 };

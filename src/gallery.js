@@ -41,7 +41,7 @@ var changeImage = function() {
   galleryPreviewCurrent.textContent = numberImage + 1;
 
   utils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
-  utils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength -1);
+  utils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength - 1);
 };
 
 var hideGallery = function() {
