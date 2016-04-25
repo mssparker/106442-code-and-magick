@@ -4,22 +4,11 @@
 
 'use strict';
 
-var config = require('./config');
-
 /** @constant {number} */
 var LOAD_TIMEOUT = 10000;
 var LOAD_STATUS_SUCCESS = 200;
 
 module.exports = {
-  /**
-   * toggle visibility for element
-   * @param  {Element} element
-   * @param  {Boolean} flag
-   */
-  toggleElementVisibility: function(element, flag) {
-    element.classList.toggle(config.hiddenClass, flag);
-  },
-
   /**
    * @param {string} url
    * @param {object} loadStatus
@@ -42,10 +31,12 @@ module.exports = {
             loadStatus.statusFailure();
           }
         }
-      }
 
-      if(loadStatus) {
-        loadStatus.statusSuccess();
+        if(loadStatus) {
+          loadStatus.statusSuccess();
+        }
+      } else if(loadStatus) {
+        loadStatus.statusFailure();
       }
     };
 

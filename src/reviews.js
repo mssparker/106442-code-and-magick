@@ -39,7 +39,7 @@
   * toggle visibility for filter
   */
 
-  utils.toggleElementVisibility(reviewsFilters, true);
+  domUtils.toggleElementVisibility(reviewsFilters, true);
 
   /**
   * @param {Object} data
@@ -160,9 +160,9 @@
     });
 
     if (to < reviewsToRender.length) {
-      utils.toggleElementVisibility(showMoreReviewsButton, false);
+      domUtils.toggleElementVisibility(showMoreReviewsButton, false);
     } else {
-      utils.toggleElementVisibility(showMoreReviewsButton, true);
+      domUtils.toggleElementVisibility(showMoreReviewsButton, true);
     }
   };
 
@@ -190,5 +190,5 @@
     setShowMoreReviews();
   });
 
-  utils.toggleElementVisibility(reviewsFilters, false);
+  domUtils.toggleElementVisibility(reviewsFilters, false);
 })();

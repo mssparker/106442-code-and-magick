@@ -3,9 +3,18 @@
 var config = require('./config');
 
 module.exports = {
+  /**
+   * toggle visibility for element
+   * @param  {Element} element
+   * @param  {Boolean} flag
+   */
+  toggleElementVisibility: function(element, flag) {
+    element.classList.toggle(config.hiddenClass, flag);
+  },
+
   loadStatus: {
     loadProgress: 'reviews-list-loading',
-    loadFailure: 'review-load-failure',
+    loadFailure: 'reviews-load-failure',
     loadContainer: document.querySelector(config.sels.reviews),
 
     statusProgress: function() {
