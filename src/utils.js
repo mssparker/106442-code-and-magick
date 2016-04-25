@@ -22,13 +22,13 @@ module.exports = {
 
   /**
    * @param {string} url
-   * @param {object} LoadStatus
+   * @param {object} loadStatus
    * @param {function(Array.<Object>)} callback
    */
-  load: function(url, LoadStatus, callback) {
+  load: function(url, loadStatus, callback) {
     var xhr = new XMLHttpRequest();
-    if(LoadStatus) {
-      config.loadContainer.classList.add(LoadStatus.loadProgress);
+    if(loadStatus) {
+      loadStatus.statusProgress();
     }
 
     /** @param {ProgressEvent} */
@@ -38,22 +38,20 @@ module.exports = {
           var loadedData = JSON.parse(evt.target.response);
           callback(loadedData);
         } catch (e) {
-          if(LoadStatus) {
-            config.loadContainer.classList.remove(LoadStatus.loadProgress);
-            config.loadContainer.classList.add(LoadStatus.loadFailure);
+          if(loadStatus) {
+            loadStatus.statusFailure();
           }
         }
       }
 
-      if(LoadStatus) {
-        config.loadContainer.classList.remove(LoadStatus.loadProgress);
+      if(loadStatus) {
+        loadStatus.statusSuccess();
       }
     };
 
     xhr.onerror = function() {
-      if(LoadStatus) {
-        config.loadContainer.classList.remove(LoadStatus.loadProgress);
-        config.loadContainer.classList.add(LoadStatus.loadFailure);
+      if(loadStatus) {
+        loadStatus.statusFailure();
       }
     };
 

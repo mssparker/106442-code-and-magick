@@ -1,5 +1,5 @@
 /**
- * @fileoverview Локальные переменные проекта
+ * @fileoverview Локальные настройки проекта
  */
 
 'use strict';
@@ -7,25 +7,34 @@
 /** @constant {string} */
 var HIDDEN_CLASSNAME = 'invisible';
 
-var loadUrl = '//o0.github.io/assets/json/reviews.json';
-var loadStatusProgress = 'reviews-list-loading';
-var loadStatusFailure = 'review-load-failure';
-var loadContainer = document.querySelector('.reviews');
-
-function LoadStatus() {
-  this.loadProgress = loadStatusProgress;
-  this.loadFailure = loadStatusFailure;
-  this.loadContain = loadContainer;
-}
-
-var loadStatus = new LoadStatus();
-
 module.exports = {
-  /**
-   * class for toggle visibility
-   */
+  /** class for toggle visibility */
   hiddenClass: HIDDEN_CLASSNAME,
-  loadUrl: loadUrl,
-  loadContainer: loadContainer,
-  loadStatus: loadStatus
+
+  /** loadUrl for load utils
+   * @type {string}
+   */
+  loadUrl: '//o0.github.io/assets/json/reviews.json',
+
+  /** Status for load utils
+   * @type {object}
+   * */
+  loadStatus: {
+    loadProgress: 'reviews-list-loading',
+    loadFailure: 'review-load-failure',
+    loadContainer: document.querySelector('.reviews'),
+
+    statusProgress: function() {
+      this.loadContainer.classList.add(this.loadProgress);
+    },
+
+    statusSuccess: function() {
+      this.loadContainer.classList.remove(this.loadProgress);
+    },
+
+    statusFailure: function() {
+      this.loadContainer.classList.remove(this.loadProgress);
+      this.loadContainer.classList.add(this.loadFailure);
+    }
+  }
 };

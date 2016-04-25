@@ -36,6 +36,14 @@ var getGalleryArray = function() {
   currentImage = galleryPreview.appendChild(createImage);
 };
 
+var changeImage = function() {
+  currentImage.src = galleryImages[numberImage];
+  galleryPreviewCurrent.textContent = numberImage + 1;
+
+  utils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
+  utils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength -1);
+};
+
 var hideGallery = function() {
   galleryBtnPrev.removeEventListener('click', showPrevImage);
   galleryBtnNext.removeEventListener('click', showNextImage);
@@ -51,18 +59,26 @@ var onDocumentKeyDown = function(evt) {
   }
 };
 
-var showPrevImage = function() {};
-var showNextImage = function() {};
-
 var onCloseClick = function() {
   hideGallery();
+};
+
+var showPrevImage = function() {
+  if (numberImage > 0) {
+    changeImage(numberImage--);
+  }
+};
+
+var showNextImage = function() {
+  if (numberImage < galleryImagesArrayLength - 1) {
+    changeImage(numberImage++);
+  }
 };
 
 /** @param {number} imageId*/
 var showGallery = function(imageId) {
   numberImage = imageId;
-  currentImage.src = galleryImages[numberImage];
-  galleryPreviewCurrent.textContent = numberImage + 1;
+  changeImage();
 
   galleryBtnPrev.addEventListener('click', showPrevImage);
   galleryBtnNext.addEventListener('click', showNextImage);
