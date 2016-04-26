@@ -39,7 +39,7 @@ var getGallery = function() {
   currentImage = galleryPreview.appendChild(createImage);
 };
 
-var changeImage = function() {
+var changeImage = function(numberImage) {
   currentImage.src = galleryImages[numberImage];
   galleryPreviewCurrent.textContent = numberImage + 1;
 
@@ -81,7 +81,7 @@ var hideGallery = function() {
 /** @param {number} imageId*/
 var showGallery = function(imageId) {
   numberImage = imageId;
-  changeImage();
+  changeImage(numberImage);
 
   galleryBtnPrev.addEventListener('click', showPrevImage);
   galleryBtnNext.addEventListener('click', showNextImage);
