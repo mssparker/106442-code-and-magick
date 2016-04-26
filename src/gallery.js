@@ -25,13 +25,16 @@ var galleryImages = [];
 
 var galleryImagesArrayLength = galleryImages.length;
 
-var getGalleryArray = function() {
-  for (var i = 0; i < galleryImagesArray.length; i++) {
-    galleryImages.push(galleryImagesArray[i].getAttribute('src'));
-    galleryImagesArray[i].dataset.id = i;
+var getGalleryArray = function(imagesArray) {
+  for (var i = 0; i < imagesArray.length; i++) {
+    galleryImages.push(imagesArray[i].getAttribute('src'));
+    imagesArray[i].dataset.id = i;
   }
-  galleryImagesArrayLength = galleryImages.length;
+};
 
+var getGallery = function() {
+  getGalleryArray(galleryImagesArray);
+  galleryImagesArrayLength = galleryImages.length;
   galleryPreviewTotal.textContent = galleryImagesArrayLength;
   currentImage = galleryPreview.appendChild(createImage);
 };
@@ -42,15 +45,6 @@ var changeImage = function() {
 
   utils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
   utils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength -1);
-};
-
-var hideGallery = function() {
-  galleryBtnPrev.removeEventListener('click', showPrevImage);
-  galleryBtnNext.removeEventListener('click', showNextImage);
-  galleryBtnClose.removeEventListener('click', onCloseClick);
-  window.removeEventListener('keydown', onDocumentKeyDown);
-
-  utils.toggleElementVisibility(galleryContainer, true);
 };
 
 var onDocumentKeyDown = function(evt) {
@@ -75,6 +69,15 @@ var showNextImage = function() {
   }
 };
 
+var hideGallery = function() {
+  galleryBtnPrev.removeEventListener('click', showPrevImage);
+  galleryBtnNext.removeEventListener('click', showNextImage);
+  galleryBtnClose.removeEventListener('click', onCloseClick);
+  window.removeEventListener('keydown', onDocumentKeyDown);
+
+  utils.toggleElementVisibility(galleryContainer, true);
+};
+
 /** @param {number} imageId*/
 var showGallery = function(imageId) {
   numberImage = imageId;
@@ -89,7 +92,7 @@ var showGallery = function(imageId) {
 };
 
 module.exports = {
-  getGalleryArray: getGalleryArray,
+  getGallery: getGallery,
   showGallery: showGallery,
   photogallery: photogallery
 };

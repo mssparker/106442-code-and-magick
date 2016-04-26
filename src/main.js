@@ -8,7 +8,7 @@ require('./reviews');
 var gallery = require('./gallery');
 var imageId;
 
-gallery.getGalleryArray();
+gallery.getGallery();
 
 gallery.photogallery.addEventListener('click', function(evt) {
   evt.preventDefault();
