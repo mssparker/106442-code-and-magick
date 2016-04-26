@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('./utils');
+var domUtils = require('./dom-utils');
 
 var photogallery = document.querySelector('.photogallery');
 var galleryImagesArray = document.querySelectorAll('.photogallery-image > img');
@@ -43,8 +43,8 @@ var changeImage = function() {
   currentImage.src = galleryImages[numberImage];
   galleryPreviewCurrent.textContent = numberImage + 1;
 
-  utils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
-  utils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength -1);
+  domUtils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
+  domUtils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength -1);
 };
 
 var onDocumentKeyDown = function(evt) {
@@ -75,7 +75,7 @@ var hideGallery = function() {
   galleryBtnClose.removeEventListener('click', onCloseClick);
   window.removeEventListener('keydown', onDocumentKeyDown);
 
-  utils.toggleElementVisibility(galleryContainer, true);
+  domUtils.toggleElementVisibility(galleryContainer, true);
 };
 
 /** @param {number} imageId*/
@@ -88,7 +88,7 @@ var showGallery = function(imageId) {
   galleryBtnClose.addEventListener('click', onCloseClick);
   window.addEventListener('keydown', onDocumentKeyDown);
 
-  utils.toggleElementVisibility(galleryContainer, false);
+  domUtils.toggleElementVisibility(galleryContainer, false);
 };
 
 module.exports = {

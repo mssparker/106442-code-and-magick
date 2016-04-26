@@ -2,7 +2,7 @@
 
 (function() {
 
-  var utils = require('./utils');
+  var domUtils = require('./dom-utils');
 
   var browserCookies = require('browser-cookies');
   var formContainer = document.querySelector('.overlay-container');
@@ -23,7 +23,7 @@
 
   formReviewSubmit.disabled = true;
   formReviewFieldName.required = true;
-  utils.toggleElementVisibility(formReviewStatusText, true);
+  domUtils.toggleElementVisibility(formReviewStatusText, true);
   formValidation();
 
 
@@ -57,7 +57,7 @@
    * @param {boolean} status
    */
   function formIsValidated(status) {
-    utils.toggleElementVisibility(formReviewStatus, status);
+    domUtils.toggleElementVisibility(formReviewStatus, status);
     formReviewSubmit.disabled = !status;
   }
 
@@ -75,8 +75,8 @@
 
     formIsValidated(nameStatus && textStatus);
 
-    utils.toggleElementVisibility(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
-    utils.toggleElementVisibility(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
+    domUtils.toggleElementVisibility(formReviewStatusName, nameStatus); /** Переключаем подсказку для поля имя */
+    domUtils.toggleElementVisibility(formReviewStatusText, textStatus); /** Переключаем подсказку для поля отзыв */
 
     formReviewFieldNameError.innerHTML = formReviewFieldName.validationMessage;
     formReviewFieldTextError.innerHTML = formReviewFieldText.validationMessage;
