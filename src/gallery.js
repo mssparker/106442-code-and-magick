@@ -83,7 +83,7 @@ var hideGallery = function() {
 /** @param {number} imageId*/
 var showGallery = function(imageId) {
   numberImage = imageId;
-  changeImage(numberImage);
+  changeImage();
 
   galleryBtnPrev.addEventListener('click', showPrevImage);
   galleryBtnNext.addEventListener('click', showNextImage);
