@@ -18,7 +18,7 @@ var ESC = 27;
 
 var currentImage;
 var numberImage;
-var createImage = new Image();
+var createImage = new Image(450, 450);
 
 /** @type {Array.<string>} */
 var galleryImages = [];
@@ -39,14 +39,6 @@ var getGallery = function() {
   currentImage = galleryPreview.appendChild(createImage);
 };
 
-var changeImage = function(numberImage) {
-  currentImage.src = galleryImages[numberImage];
-  galleryPreviewCurrent.textContent = numberImage + 1;
-
-  domUtils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
-  domUtils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength -1);
-};
-
 var onDocumentKeyDown = function(evt) {
   if (evt.keyCode === ESC) {
     hideGallery();
@@ -59,14 +51,24 @@ var onCloseClick = function() {
 
 var showPrevImage = function() {
   if (numberImage > 0) {
-    changeImage(numberImage--);
+    numberImage--;
+    changeImage();
   }
 };
 
 var showNextImage = function() {
   if (numberImage < galleryImagesArrayLength - 1) {
-    changeImage(numberImage++);
+    numberImage++;
+    changeImage();
   }
+};
+
+var changeImage = function() {
+  currentImage.src = galleryImages[numberImage];
+  galleryPreviewCurrent.textContent = numberImage + 1;
+
+  domUtils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
+  domUtils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength - 1);
 };
 
 var hideGallery = function() {
@@ -94,6 +96,7 @@ var showGallery = function(imageId) {
 module.exports = {
   getGallery: getGallery,
   showGallery: showGallery,
+  galleryImagesArray: galleryImagesArray,
   photogallery: photogallery
 };
 
