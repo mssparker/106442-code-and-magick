@@ -29,5 +29,24 @@ module.exports = {
       this.loadContainer.classList.remove(this.loadProgress);
       this.loadContainer.classList.add(this.loadFailure);
     }
+  },
+  imgHandler: {
+    getDataId: function(img) {
+      return img.dataset.id;
+    },
+    setDataId: function(img, id) {
+      img.dataset.id = id;
+    }
+  },
+  getSrcArray: function(collection, callback) {
+    var srcArray = [];
+    for (var i = 0; i < collection.length; i++) {
+      srcArray.push(collection[i].getAttribute('src'));
+      if (callback) {
+        callback(collection[i], i);
+      }
+    }
+
+    return srcArray;
   }
 };

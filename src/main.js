@@ -6,20 +6,17 @@ require('./game');
 require('./reviews');
 
 var gallery = require('./gallery');
+var domUtils = require('./dom-utils');
 var imageId;
 
-var utils = require('./utils');
-
-utils.getSrcArray(gallery.galleryImagesArray, function(srcArray) {
-  gallery.galleryImages = srcArray;
-});
-
-gallery.getGallery(gallery.galleryImages);
+gallery.getGallery(domUtils.getSrcArray(gallery.galleryImagesArray, domUtils.imgHandler.setDataId));
 
 gallery.photogallery.addEventListener('click', function(evt) {
   evt.preventDefault();
   if (evt.target.tagName === 'IMG') {
-    imageId = parseInt(evt.target.dataset.id, 10);
+    imageId = parseInt(domUtils.imgHandler.getDataId(evt.target), 10);
     gallery.showGallery(imageId);
   }
 });
+
+

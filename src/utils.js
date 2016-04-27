@@ -49,15 +49,5 @@ module.exports = {
     xhr.timeout = LOAD_TIMEOUT;
     xhr.open('GET', url);
     xhr.send();
-  },
-
-  getSrcArray: function(collection, callback) {
-    var srcArray = [];
-    for (var i = 0; i < collection.length; i++) {
-      srcArray.push(collection[i].getAttribute('src'));
-      collection[i].dataset.id = i;
-    }
-
-    callback(srcArray)
   }
 };
