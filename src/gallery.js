@@ -56,12 +56,13 @@ var showNextImage = function() {
   }
 };
 
-var changeImage = function(numberImage) {
-  currentImage.src = galleryImages[numberImage];
-  galleryPreviewCurrent.textContent = numberImage + 1;
+var changeImage = function(numberCurrent) {
+  numberCurrent = numberImage;
+  currentImage.src = galleryImages[numberCurrent];
+  galleryPreviewCurrent.textContent = numberCurrent + 1;
 
-  domUtils.toggleElementVisibility(galleryBtnPrev, numberImage === 0);
-  domUtils.toggleElementVisibility(galleryBtnNext, numberImage === galleryImagesArrayLength - 1);
+  domUtils.toggleElementVisibility(galleryBtnPrev, numberCurrent === 0);
+  domUtils.toggleElementVisibility(galleryBtnNext, numberCurrent === galleryImagesArrayLength - 1);
 };
 
 var hideGallery = function() {
