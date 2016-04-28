@@ -25,15 +25,8 @@ var galleryImages = [];
 
 var galleryImagesArrayLength = galleryImages.length;
 
-var getGalleryArray = function(imagesArray) {
-  for (var i = 0; i < imagesArray.length; i++) {
-    galleryImages.push(imagesArray[i].getAttribute('src'));
-    imagesArray[i].dataset.id = i;
-  }
-};
-
-var getGallery = function() {
-  getGalleryArray(galleryImagesArray);
+var getGallery = function(srcArray) {
+  galleryImages = srcArray;
   galleryImagesArrayLength = galleryImages.length;
   galleryPreviewTotal.textContent = galleryImagesArrayLength;
   currentImage = galleryPreview.appendChild(createImage);
@@ -52,18 +45,18 @@ var onCloseClick = function() {
 var showPrevImage = function() {
   if (numberImage > 0) {
     numberImage--;
-    changeImage();
+    changeImage(numberImage);
   }
 };
 
 var showNextImage = function() {
   if (numberImage < galleryImagesArrayLength - 1) {
     numberImage++;
-    changeImage();
+    changeImage(numberImage);
   }
 };
 
-var changeImage = function() {
+var changeImage = function(numberImage) {
   currentImage.src = galleryImages[numberImage];
   galleryPreviewCurrent.textContent = numberImage + 1;
 
@@ -83,7 +76,7 @@ var hideGallery = function() {
 /** @param {number} imageId*/
 var showGallery = function(imageId) {
   numberImage = imageId;
-  changeImage();
+  changeImage(numberImage);
 
   galleryBtnPrev.addEventListener('click', showPrevImage);
   galleryBtnNext.addEventListener('click', showNextImage);
