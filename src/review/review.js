@@ -13,7 +13,7 @@ var createReviewElement = require('./create-review-element');
 
 /**
  * @param {Object} data
- * @param {Element} clone
+ * @param {Element} container
  * @constructor
  */
 

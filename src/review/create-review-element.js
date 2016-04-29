@@ -27,15 +27,10 @@ if ('content' in templateElement) {
 
 /**
  * @param {Object} data
- * @param {HTMLElement} clone
- * @return {HTMLElement}
- */
-/**
- * @param {Object} data
  * @return {HTMLElement}
  */
 
-var createReviewElement = function(data, container) {
+var createReviewElement = function(data) {
   var element = reviewToClone.cloneNode(true);
   var reviewRating = element.querySelector('.review-rating');
   var reviewAuthor = element.querySelector('.review-author');
