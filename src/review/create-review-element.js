@@ -71,7 +71,6 @@ var createReviewElement = function(data, container) {
     element.classList.add('review-load-failure');
   }, IMAGE_LOAD_TIMEOUT);
 
-  container.appendChild(element);
   return element;
 };
 
