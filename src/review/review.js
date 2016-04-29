@@ -38,6 +38,7 @@ var Review = function(data, container) {
   };
 
   this.element.addEventListener('click', this.onReviewAnswer);
+  container.appendChild(this.element);
 };
 
 module.exports = Review;
