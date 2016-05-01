@@ -14,6 +14,7 @@ var utils = require('./utils');
 var config = require('./config');
 
 var reviewsFilters = document.querySelector('.reviews-filter');
+var reviewsFilter = reviewsFilters.querySelectorAll('input');
 var reviewsContainer = document.querySelector('.reviews-list');
 var showMoreReviewsButton = document.querySelector('.reviews-controls-more');
 
@@ -45,6 +46,7 @@ var pageNumber = 0;
  */
 var renderedReviews = [];
 
+var getLastFilter = localStorage.getItem('filterValue');
 /**
 * toggle visibility for filter
 */
@@ -97,8 +99,6 @@ var setShowMoreReviews = function() {
   });
 };
 
-
-
 /** @param {Filter} filter */
 var setFilterEnabled = function(filterType) {
   filteredReviews = filter(reviews, filterType);
@@ -111,14 +111,32 @@ function setFiltersEnabled() {
 
     if (evt.target.type === 'radio') {
       setFilterEnabled(evt.target.value);
+      setFilterStorage(evt.target.value);
     }
   });
 }
 
+function setFilterStorage(value) {
+  localStorage.setItem('filterValue', value);
+}
+
+function setFilterActive(filterLast) {
+  for (var i = 0; i < reviewsFilter.length; i++) {
+    if(reviewsFilter[i].value === filterLast) {
+      reviewsFilter[i].setAttribute('checked', true);
+    }
+  }
+}
+
 utils.load(config.loadUrl, domUtils.loadStatus, function(loadedReviews) {
   reviews = loadedReviews;
-  setFiltersEnabled(true);
-  setFilterEnabled(DEFAULT_FILTER);
+  setFiltersEnabled();
+  if(getLastFilter !== null) {
+    setFilterEnabled(getLastFilter);
+    setFilterActive(getLastFilter);
+  } else {
+    setFilterEnabled(DEFAULT_FILTER);
+  }
   setShowMoreReviews();
 });
 
