@@ -20,8 +20,17 @@ var createReviewElement = require('./create-review-element');
 var Review = function(data, container) {
   this.data = data;
   this.element = createReviewElement(data, container);
+  this.onReviewAnswer = this.onReviewAnswer.bind(this);
+  this.remove = this.remove.bind(this);
+  this.onClick = this.onClick.bind(this);
+  container.appendChild(this.element);
+};
 
-  this.onReviewAnswer = function(evt) {
+Review.prototype = {
+  create: function(data, container) {
+    this.element = createReviewElement(data, container);
+  },
+  onReviewAnswer: function(evt) {
     if (evt.target.classList.contains('review-quiz-answer')) {
       var activeAnswer = evt.target.parentNode.querySelector('.review-quiz-answer-active');
 
@@ -31,14 +40,13 @@ var Review = function(data, container) {
 
       evt.target.classList.add('.review-quiz-answer-active');
     }
-  };
-  this.remove = function() {
+  },
+  onClick: function() {
+    this.element.addEventListener('click', this.onReviewAnswer);
+  },
+  remove: function() {
     this.element.removeEventListener('click', this.onReviewAnswer);
     this.element.parentNode.removeChild(this.element);
-  };
-
-  this.element.addEventListener('click', this.onReviewAnswer);
-  container.appendChild(this.element);
+  }
 };
-
 module.exports = Review;
