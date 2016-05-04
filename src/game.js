@@ -394,71 +394,132 @@
       }
     },
 
-
-
+    /**
+    * Отрисовка сообщений.
+    * @param {string} text
+    */
     _drawMessage: function(text) {
 
       var boxWidth = 400;
-      var boxHeight = 180;
       var boxIndent = 15;
       var boxIndentAll = 30;
-      var boxIndentShadow = 10;
-      var textIndentTop = 55;
-      var textIndentLeft = 55;
-      var maxTextWidth = boxWidth - 80;
+      var textIndent = 55;
       var lineHeight = 20;
+      var messageText = this._splitText(text);
+      var boxHeight = this._getMessageHeight(messageText, lineHeight, textIndent);
+
+      /** Отрисовываем тень бокса */
+      this._drawBoxShadow(boxIndentAll, boxIndent, boxWidth, boxHeight);
+
+      /**  Отрисовываем сам бокс */
+      this._drawBox(boxIndentAll, boxIndent, boxWidth, boxHeight);
+
+       /**  Отрисовываем текст в боксе */
+      this._drawText(messageText, lineHeight);
+    },
+
+    /**
+     * Разбиваем текст на строки, так что бы их длина не превышающала ширину бокса.
+     * @param {string} text
+     * @return {Array}
+     */
+    _splitText: function(text) {
+      var ctx = this.ctx;
+      var maxTextWidth = 320;
+      // Разбиваем текст на слова
       var arrayOfText = text.split(' ');
       var textLine = '';
       var emptyLine = ' ';
+      // Массив для строк сообщения.
+      var arrayOfRows = [];
+      // Слова объединяем по одному в строку. Если при последнем объединении ширина этой строки меньше максимальной
+      // то продолжаем, а если больше, то выводим строку без последнего слова, а его записываем в новую строку.
+      // И так продолжаем, пока не обработаем весь текст.
+      // Полученные строки в массив arrayOfRows.
 
+      for (var i = 0; i < arrayOfText.length; i++) {
+        var textRow = textLine + arrayOfText[i] + emptyLine;
+        var textWidth = ctx.measureText(textRow).width;
 
-      // Shadow box
+        if (textWidth > maxTextWidth) {
+          arrayOfRows.push(textLine);
+          textLine = arrayOfText[i] + emptyLine;
+        } else {
+          textLine = textRow;
+        }
+      }
+      arrayOfRows.push(textLine);
 
+      return arrayOfRows;
+    },
+
+    /**
+     * Получаем высоту бокса.
+     * @param {Array} messageText
+     * @param {number} lineHeight
+     * @param {number} textIndent
+     * @return {number}
+     */
+    _getMessageHeight: function(messageText, lineHeight, textIndent) {
+      return lineHeight * messageText.length + textIndent;
+    },
+
+    /**
+     * Отрисовка тени бокса.
+     * @param {number} pos
+     * @param {number} indent
+     * @param {number} width
+     * @param {number} height
+     */
+    _drawBoxShadow: function(pos, indent, width, height) {
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(boxIndentAll + boxIndent, boxIndentAll + boxIndentShadow);
-      this.ctx.lineTo(boxIndentAll + boxIndentShadow, boxHeight + boxIndent + boxIndentShadow);
-      this.ctx.lineTo(boxWidth + boxIndentShadow, boxHeight + boxIndentShadow);
-      this.ctx.lineTo(boxWidth + boxIndentShadow, boxIndentAll + boxIndentShadow);
+      this.ctx.moveTo(pos + indent, pos + indent);
+      this.ctx.lineTo(pos + indent, height + indent + indent);
+      this.ctx.lineTo(width + indent, height + indent);
+      this.ctx.lineTo(width + indent, pos + indent);
       this.ctx.closePath();
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.fill();
+    },
 
-      // White box
-
+    /**
+     * Отрисовка бокса.
+     * @param {number} pos
+     * @param {number} indent
+     * @param {number} width
+     * @param {number} height
+     */
+    _drawBox: function(pos, indent, width, height) {
       this.ctx.beginPath();
-      this.ctx.moveTo(boxIndentAll + boxIndent, boxIndentAll);
-      this.ctx.lineTo(boxIndentAll, boxHeight + boxIndent);
-      this.ctx.lineTo(boxWidth, boxHeight);
-      this.ctx.lineTo(boxWidth, boxIndentAll);
+      this.ctx.moveTo(pos + indent, pos);
+      this.ctx.lineTo(pos, height + indent);
+      this.ctx.lineTo(width, height);
+      this.ctx.lineTo(width, pos);
       this.ctx.closePath();
       this.ctx.fillStyle = '#fff';
       this.ctx.fill();
       this.ctx.fillStyle = '#000';
       this.ctx.font = '16px PT Mono';
       this.ctx.textBaseline = 'hanging';
-
-      // Разбиваем текст на слова по пробелам, а потом обходим их в цикле
-      // объединяя по одному в строку. Если при последнем объединении ширина этой строки меньше максимальной
-      // то продолжаем, а если больше, то выводим строку без последнего слова, а его записываем в новую строку.
-      // И так продолжаем, пока не обработаем весь текст.
-
-      for(var i = 0; i < arrayOfText.length; i++) {
-        var textRow = textLine + arrayOfText[i] + emptyLine;
-        var textWidth = this.ctx.measureText(textRow).width;
-        if (textWidth > maxTextWidth) {
-          this.ctx.fillText(textLine, textIndentLeft, textIndentTop);
-          textLine = arrayOfText[i] + emptyLine;
-          textIndentTop += lineHeight;
-
-        } else {
-          textLine = textRow;
-        }
-      }
-
-      this.ctx.fillText(textLine, textIndentLeft, textIndentTop);
-
     },
 
+    /**
+     * Отрисовка текста.
+     * @param {Array} messageText
+     * @param {number} lineHeight
+     */
+    _drawText: function(messageText, lineHeight) {
+      this.ctx.font = '16px PT Mono';
+      this.ctx.fillStyle = '#000';
+      var textIndentTop = 55;
+      var textIndentLeft = 55;
+
+      for (var i = 0; i < messageText.length; i++) {
+        this.ctx.fillText(messageText[i], textIndentLeft, textIndentTop);
+        textIndentTop += lineHeight;
+      }
+    },
 
     /**
      * Предзагрузка необходимых изображений для уровня.
