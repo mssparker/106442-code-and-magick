@@ -48,5 +48,13 @@ module.exports = {
     }
 
     return srcArray;
+  },
+  inherit: function(ChildComponent, BaseComponent) {
+    var emptyCtor = function() {};
+
+    emptyCtor.prototype = BaseComponent.prototype;
+    ChildComponent.prototype = new emptyCtor();
+
+    ChildComponent.prototype.constructor = ChildComponent;
   }
 };

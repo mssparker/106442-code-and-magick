@@ -9,6 +9,8 @@
 
 'use strict';
 
+var BaseComponent = require('../dom-component');
+var domUtils = require('../dom-utils');
 var createReviewElement = require('./create-review-element');
 
 /**
@@ -18,18 +20,16 @@ var createReviewElement = require('./create-review-element');
  */
 
 var Review = function(data, container) {
-  this.data = data;
-  this.element = createReviewElement(data, container);
+  BaseComponent.call(this, data, createReviewElement);
   this.onReviewAnswer = this.onReviewAnswer.bind(this);
   this.remove = this.remove.bind(this);
   this.onClick = this.onClick.bind(this);
-  container.appendChild(this.element);
+  BaseComponent.prototype.insert.call(this, container);
 };
 
+domUtils.inherit(Review, BaseComponent);
+
 Review.prototype = {
-  create: function(data, container) {
-    this.element = createReviewElement(data, container);
-  },
   onReviewAnswer: function(evt) {
     if (evt.target.classList.contains('review-quiz-answer')) {
       var activeAnswer = evt.target.parentNode.querySelector('.review-quiz-answer-active');
@@ -46,7 +46,7 @@ Review.prototype = {
   },
   remove: function() {
     this.element.removeEventListener('click', this.onReviewAnswer);
-    this.element.parentNode.removeChild(this.element);
+    BaseComponent.prototype.remove.call(this);
   }
 };
 module.exports = Review;
