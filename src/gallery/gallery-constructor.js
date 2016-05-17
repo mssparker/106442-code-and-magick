@@ -4,7 +4,7 @@
 
 'use strict';
 
-var domUtils = require('./dom-utils');
+var domUtils = require('../dom-utils');
 
 var galleryContainer = document.querySelector('.overlay-gallery');
 var galleryPreview = galleryContainer.querySelector('.overlay-gallery-preview');

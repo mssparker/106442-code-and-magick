@@ -6,12 +6,13 @@
 'use strict';
 
 
-var filter = require('./filter/filter');
-var FilterType = require('./filter/filter-type');
-var Review = require('./review/review-constructor'); 
-var domUtils = require('./dom-utils');
-var utils = require('./utils');
-var config = require('./config');
+var filter = require('../filter/filter');
+var FilterType = require('../filter/filter-type');
+var Review = require('./review-constructor');
+var Data = require('./data-constructor');
+var domUtils = require('../dom-utils');
+var utils = require('../utils');
+var config = require('../config');
 
 var reviewsFilters = document.querySelector('.reviews-filter');
 var reviewsFilter = reviewsFilters.querySelectorAll('input');
@@ -70,7 +71,8 @@ var renderReviews = function(reviewsToRender, page, replace) {
   var to = from + PAGE_SIZE;
 
   reviewsToRender.slice(from, to).forEach(function(review) {
-    renderedReviews.push(new Review(review, reviewsContainer));
+    var data = new Data(review);
+    renderedReviews.push(new Review(data, reviewsContainer));
   });
 
   if (to < reviewsToRender.length) {

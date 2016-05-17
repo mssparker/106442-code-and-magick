@@ -5,12 +5,6 @@
 
 'use strict';
 
-/**
- * @param {Object} data
- * @param {Element} clone
- * @constructor
- */
-
 /** @constant {number} */
 var IMAGE_LOAD_TIMEOUT = 10000;
 var RATING_DEFAULT_SIZE = 30;
@@ -37,15 +31,15 @@ var createReviewElement = function(data) {
   var reviewAuthorImage = new Image();
   var reviewAuthorImageLoadTimeout;
 
-  element.querySelector('.review-text').textContent = data.description;
-  reviewAuthor.title = data.author.name;
-  reviewAuthor.alt = data.author.name;
+  element.querySelector('.review-text').textContent = data.getDescription();
+  reviewAuthor.title = data.getAuthorName();
+  reviewAuthor.alt = data.getAuthorName();
   reviewAuthor.width = IMAGE_SIZE;
   reviewAuthor.height = IMAGE_SIZE;
 
   var reviewRatingSize = 0;
 
-  for(var i = 0; i < data.rating; i++) {
+  for(var i = 0; i < data.getRating(); i++) {
     reviewRatingSize = reviewRatingSize + RATING_DEFAULT_SIZE;
     reviewRating.style.width = reviewRatingSize + 'px';
   }
@@ -59,7 +53,7 @@ var createReviewElement = function(data) {
     element.classList.add('review-load-failure');
   };
 
-  reviewAuthorImage.src = data.author.picture;
+  reviewAuthorImage.src = data.getAuthorImage();
 
   reviewAuthorImageLoadTimeout = setTimeout(function() {
     reviewAuthorImage.src = '';
